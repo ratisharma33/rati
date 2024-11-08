@@ -1,0 +1,28 @@
+void load_contacts(const char *filename, struct Contact contacts[], int *num_contacts) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) return;
+    while (fscanf(file, "%99[^,],%99[^,],%99[^,],%99[^\n]\n",
+                  contacts[*num_contacts].name,
+                  contacts[*num_contacts].phone,
+                  contacts[*num_contacts].email,
+                  contacts[*num_contacts].address) == 4) {
+        (*num_contacts)++;
+    }
+    fclose(file);
+}
+
+void save_contacts(const char *filename, struct Contact contacts[], int num_contacts) {
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error saving contacts.\n");
+        return;
+    }
+    for (int i = 0; i < num_contacts; i++) {
+        fprintf(file, "%s,%s,%s,%s\n",
+                contacts[i].name,
+                contacts[i].phone,
+                contacts[i].email,
+                contacts[i].address);
+    }
+    fclose(file);
+}
